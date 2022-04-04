@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import AwesomeButton from "react-native-really-awesome-button";
 import { mealItems } from '../sampleData';
-import MealItem from '../MealItem';
+import MealItem from '../components/MealItem';
 import FooterNav from '../components/FooterNav';
 
 
