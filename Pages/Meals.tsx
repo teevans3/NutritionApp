@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import AwesomeButton from "react-native-really-awesome-button";
 import { mealItems } from "../sampleData";
@@ -6,6 +6,9 @@ import MealItem from "../components/MealItem";
 import FooterNav from "../components/FooterNav";
 
 const Meals = ({ navigation }): ReactElement => {
+  // TODO - find a better way to do this
+  const [displayedMealId, setDisplayedMealId] = useState<number | null>(null);
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -22,10 +25,26 @@ const Meals = ({ navigation }): ReactElement => {
         >
           Add New Meal
         </AwesomeButton>
+        <AwesomeButton
+          style={styles.mealItemsList}
+          stretch
+          backgroundColor="#2c824a"
+          backgroundDarker="#1c5430"
+          borderRadius={116}
+          raiseLevel={6}
+          textSize={20}
+        >
+          Search
+        </AwesomeButton>
         <FlatList
           data={mealItems}
           renderItem={({ item }) => (
-            <MealItem item={item} navigation={navigation} />
+            <MealItem
+              item={item}
+              navigation={navigation}
+              displayedMealId={displayedMealId}
+              setDisplayedMealId={setDisplayedMealId}
+            />
           )}
         />
       </View>

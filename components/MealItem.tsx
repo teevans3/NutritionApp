@@ -4,9 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import AwesomeButton from "react-native-really-awesome-button";
 import { addMeal, removeMeal, selectMealIds } from "../nutritionSlice";
 
-const MealItem = ({ item, navigation }): ReactElement => {
-  const [displayMealData, setDisplayMealData] = useState<boolean>(false);
-
+const MealItem = ({
+  item,
+  navigation,
+  displayedMealId,
+  setDisplayedMealId,
+}): ReactElement => {
   const dispatch = useDispatch();
   const mealIds = useSelector(selectMealIds);
 
@@ -40,6 +43,12 @@ const MealItem = ({ item, navigation }): ReactElement => {
       <AwesomeButton onPress={untrackMeal}>Untrack Meal</AwesomeButton>
     ) : null;
 
+  const displayMealInfo = () => {
+    if (item.id === displayedMealId) {
+      return setDisplayedMealId(null);
+    }
+    return setDisplayedMealId(item.id);
+  };
   return (
     <View style={styles.mealItemContainer}>
       <AwesomeButton
@@ -49,11 +58,11 @@ const MealItem = ({ item, navigation }): ReactElement => {
         borderWidth={1}
         raiseLevel={0}
         key={item.id}
-        onPress={() => setDisplayMealData(!displayMealData)}
+        onPress={displayMealInfo}
       >
         {item.name}
       </AwesomeButton>
-      {displayMealData && (
+      {displayedMealId === item.id && (
         <>
           <AwesomeButton onPress={trackMeal}>Track Meal</AwesomeButton>
           {renderUntrackMealBtn()}
