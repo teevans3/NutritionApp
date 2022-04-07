@@ -1,17 +1,19 @@
 import React, { ReactElement, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AwesomeButton from "react-native-really-awesome-button";
-import { addMeal, removeMeal } from "../nutritionSlice";
+import { addMeal, removeMeal, selectMealIds } from "../nutritionSlice";
 
 const MealItem = ({ item, navigation }): ReactElement => {
   const [displayMealData, setDisplayMealData] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const mealIds = useSelector(selectMealIds);
 
   const trackMeal = () => {
     dispatch(
       addMeal({
+        mealId: item.id,
         calories: item.calories,
         protein: item.protein,
         netCarbs: item.netCarbs,
@@ -23,6 +25,7 @@ const MealItem = ({ item, navigation }): ReactElement => {
   const untrackMeal = () => {
     dispatch(
       removeMeal({
+        mealId: item.id,
         calories: item.calories,
         protein: item.protein,
         netCarbs: item.netCarbs,
@@ -30,6 +33,12 @@ const MealItem = ({ item, navigation }): ReactElement => {
     );
     navigation.navigate("Home");
   };
+
+  // only render Untrack Meal btn if meal was added to store
+  const renderUntrackMealBtn = () =>
+    mealIds.includes(item.id) ? (
+      <AwesomeButton onPress={untrackMeal}>Untrack Meal</AwesomeButton>
+    ) : null;
 
   return (
     <View style={styles.mealItemContainer}>
@@ -44,10 +53,10 @@ const MealItem = ({ item, navigation }): ReactElement => {
       >
         {item.name}
       </AwesomeButton>
-      {displayMealData ? (
+      {displayMealData && (
         <>
           <AwesomeButton onPress={trackMeal}>Track Meal</AwesomeButton>
-          <AwesomeButton onPress={untrackMeal}>Untrack Meal</AwesomeButton>
+          {renderUntrackMealBtn()}
           <View style={styles.nutritionContainer}>
             <Text style={[styles.mealDataText, styles.nutritionText]}>
               Protein: {item.protein}g
@@ -61,7 +70,7 @@ const MealItem = ({ item, navigation }): ReactElement => {
           </View>
           <Text style={styles.mealDataText}>{item.description}</Text>
         </>
-      ) : null}
+      )}
     </View>
   );
 };

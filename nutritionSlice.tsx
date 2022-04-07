@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const nutritionSlice = createSlice({
   name: "nutrition",
   initialState: {
+    mealIds: [], // meal ids
     totalCalories: 0,
     totalProtein: 0,
     totalNetCarbs: 0,
@@ -11,14 +12,20 @@ export const nutritionSlice = createSlice({
     // NOTE: it looks like we are mutating the state directly,
     // but we are not because createSlice uses Immer: https://redux.js.org/tutorials/essentials/part-2-app-structure#reducers-and-immutable-updates
     addMeal: (state, action) => {
+      state.mealIds.push(action.payload.mealId);
       state.totalCalories += action.payload.calories;
       state.totalProtein += action.payload.protein;
       state.totalNetCarbs += action.payload.netCarbs;
     },
     removeMeal: (state, action) => {
-      state.totalCalories -= action.payload.calories;
-      state.totalProtein -= action.payload.protein;
-      state.totalNetCarbs -= action.payload.netCarbs;
+      // TODO - find a better way to do this
+      const index = state.mealIds.indexOf(action.payload.mealId);
+      if (index !== -1) {
+        state.mealIds.splice(index, 1);
+        state.totalCalories -= action.payload.calories;
+        state.totalProtein -= action.payload.protein;
+        state.totalNetCarbs -= action.payload.netCarbs;
+      }
     },
     addByAmount: (state, action) => {
       // TODO - find a better way to do this
@@ -66,5 +73,6 @@ export const incrementAsync = (amount) => (dispatch) => {
 export const selectTotalCalories = (state) => state.nutrition.totalCalories;
 export const selectTotalProtein = (state) => state.nutrition.totalProtein;
 export const selectTotalNetCarbs = (state) => state.nutrition.totalNetCarbs;
+export const selectMealIds = (state) => state.nutrition.mealIds;
 
 export default nutritionSlice.reducer;
