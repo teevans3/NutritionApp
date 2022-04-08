@@ -1,13 +1,16 @@
 import React, { ReactElement, useState } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import AwesomeButton from "react-native-really-awesome-button";
-import { mealItems } from "../sampleData";
 import MealItem from "../components/MealItem";
 import FooterNav from "../components/FooterNav";
+import { useDispatch, useSelector } from "react-redux";
+import { selectMealItems } from "../mealsSlice";
 
 const Meals = ({ navigation }): ReactElement => {
   // TODO - find a better way to do this
   const [displayedMealId, setDisplayedMealId] = useState<number | null>(null);
+
+  const mealItems = useSelector(selectMealItems);
 
   return (
     <View style={styles.container}>
@@ -22,6 +25,9 @@ const Meals = ({ navigation }): ReactElement => {
           borderRadius={116}
           raiseLevel={6}
           textSize={20}
+          onPress={() => {
+            navigation.navigate("Create");
+          }}
         >
           Add New Meal
         </AwesomeButton>

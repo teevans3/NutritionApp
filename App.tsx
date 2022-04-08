@@ -9,6 +9,7 @@ import Home from "./Pages/Home";
 import History from "./Pages/History";
 import Profile from "./Pages/Profile";
 import ExactAmount from "./Pages/ExactAmount";
+import Create from "./Pages/Create";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App(): ReactElement {
           <Stack.Screen name="History" component={History} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="ExactAmount" component={ExactAmount} />
+          <Stack.Screen name="Create" component={Create} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
