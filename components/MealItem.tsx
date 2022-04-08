@@ -87,7 +87,6 @@ const MealItem = ({
 export default MealItem;
 
 const styles = StyleSheet.create({
-  mealItemContainer: {},
   mealItemBtn: {
     alignSelf: "flex-start",
   },

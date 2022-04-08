@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StatusBar } from "react-native";
 import { useState, ReactElement } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,21 +13,51 @@ import Create from "./Pages/Create";
 
 const Stack = createNativeStackNavigator();
 
+const stackStyleOptions = {
+  headerStyle: {
+    backgroundColor: "black",
+  },
+  headerTintColor: "white",
+};
+
 export default function App(): ReactElement {
   return (
     <Provider store={store}>
+      <StatusBar backgroundColor="blue" barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Meals" component={Meals} />
-          <Stack.Screen name="History" component={History} />
-          <Stack.Screen name="Profile" component={Profile} />
-          <Stack.Screen name="ExactAmount" component={ExactAmount} />
-          <Stack.Screen name="Create" component={Create} />
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={stackStyleOptions}
+          />
+          <Stack.Screen
+            name="Meals"
+            component={Meals}
+            options={stackStyleOptions}
+          />
+          <Stack.Screen
+            name="History"
+            component={History}
+            options={stackStyleOptions}
+          />
+          <Stack.Screen
+            name="Profile"
+            component={Profile}
+            options={stackStyleOptions}
+          />
+          <Stack.Screen
+            name="ExactAmount"
+            component={ExactAmount}
+            options={stackStyleOptions}
+          />
+          <Stack.Screen
+            name="Create"
+            component={Create}
+            options={stackStyleOptions}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({});

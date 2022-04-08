@@ -1,5 +1,5 @@
-import React, { ReactElement, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { ReactElement } from "react";
+import { useSelector } from "react-redux";
 import {
   selectTotalCalories,
   selectTotalProtein,
@@ -8,6 +8,7 @@ import {
 import { StyleSheet, Text, View } from "react-native";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
+import { container } from "../styles/general";
 
 type HomePropsType = {
   navigation: any;
@@ -17,8 +18,6 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
   const totalCalories = useSelector(selectTotalCalories);
   const totalProtein = useSelector(selectTotalProtein);
   const totalNetCarbs = useSelector(selectTotalNetCarbs);
-
-  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
@@ -31,12 +30,6 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
         <AwesomeButton onPress={() => navigation.navigate("ExactAmount")}>
           Add Exact Amount of Nutrition
         </AwesomeButton>
-        {/* <AwesomeButton stretch onPress={() => dispatch(addMeal())}>
-          Add Meal
-        </AwesomeButton>
-        <AwesomeButton stretch onPress={() => dispatch(removeMeal())}>
-          Remove Meal
-        </AwesomeButton> */}
       </View>
       <FooterNav navigation={navigation} />
     </View>
@@ -46,14 +39,7 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "#2e2e2e",
-    padding: 24,
-    paddingTop: 46,
-    justifyContent: "space-between",
-  },
+  container: container,
   pageHeader: {
     color: "white",
     fontSize: 36,

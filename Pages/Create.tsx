@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
 import { createMeal, selectMealItems } from "../mealsSlice";
+import { container } from "../styles/general";
 
 const Create = ({ navigation }): ReactElement => {
   const [name, setName] = useState<string>("");
@@ -89,14 +90,7 @@ const Create = ({ navigation }): ReactElement => {
 export default Create;
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "#2e2e2e",
-    padding: 24,
-    paddingTop: 46,
-    justifyContent: "space-between",
-  },
+  container: container,
   pageHeader: {
     color: "white",
     fontSize: 36,

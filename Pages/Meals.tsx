@@ -3,8 +3,9 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import AwesomeButton from "react-native-really-awesome-button";
 import MealItem from "../components/MealItem";
 import FooterNav from "../components/FooterNav";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectMealItems } from "../mealsSlice";
+import { container } from "../styles/general";
 
 const Meals = ({ navigation }): ReactElement => {
   // TODO - find a better way to do this
@@ -62,13 +63,7 @@ const Meals = ({ navigation }): ReactElement => {
 export default Meals;
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "#2e2e2e",
-    padding: 24,
-    paddingTop: 46,
-  },
+  container: container,
   pageHeader: {
     color: "white",
     fontSize: 36,

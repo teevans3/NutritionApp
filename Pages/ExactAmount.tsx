@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import AwesomeButton from "react-native-really-awesome-button";
 import FooterNav from "../components/FooterNav";
 import { addByAmount, removeByAmount } from "../nutritionSlice";
+import { container } from "../styles/general";
 
 const ExactAmount = ({ navigation }): ReactElement => {
   // TODO - enum this
@@ -71,14 +72,7 @@ const ExactAmount = ({ navigation }): ReactElement => {
 export default ExactAmount;
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    height: "100%",
-    backgroundColor: "#2e2e2e",
-    padding: 24,
-    paddingTop: 46,
-    justifyContent: "space-between",
-  },
+  container: container,
   pageHeader: {
     color: "white",
     fontSize: 36,
