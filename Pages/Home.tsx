@@ -5,6 +5,7 @@ import {
   selectTotalProtein,
   selectTotalNetCarbs,
 } from "../nutritionSlice";
+import moment from "moment";
 import { StyleSheet, Text, View } from "react-native";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
@@ -15,21 +16,47 @@ type HomePropsType = {
 };
 
 const Home = ({ navigation }: HomePropsType): ReactElement => {
+  const currentDate = moment(new Date()).format("dddd MMMM D Y");
+
   const totalCalories = useSelector(selectTotalCalories);
   const totalProtein = useSelector(selectTotalProtein);
   const totalNetCarbs = useSelector(selectTotalNetCarbs);
 
+  const nutritionList = [
+    { title: "Calories", total: totalCalories },
+    { title: "Protein", total: totalProtein },
+    { title: "Net Carbs", total: totalNetCarbs },
+  ];
+
+  const renderNutritionInfo = () =>
+    nutritionList.map(({ title, total }) => (
+      <View style={styles.nutritionContainer} key={title}>
+        <Text style={styles.nutritionText}>
+          {title}: {total}
+          {title === "Calories" ? null : "g"}
+        </Text>
+        <AwesomeButton
+          width={60}
+          height={50}
+          raiseLevel={0}
+          borderRadius={10}
+          onPress={() =>
+            navigation.navigate("Edit", {
+              nutritionType: title,
+            })
+          }
+        >
+          Edit
+        </AwesomeButton>
+      </View>
+    ));
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.pageHeader}>Home Page</Text>
-        <Text style={styles.pageHeader}>Today's Date:</Text>
-        <Text style={styles.pageBody}>Calories: {totalCalories}g</Text>
-        <Text style={styles.pageBody}>Protein: {totalProtein}g</Text>
-        <Text style={styles.pageBody}>Net Carbs: {totalNetCarbs}g</Text>
-        <AwesomeButton onPress={() => navigation.navigate("ExactAmount")}>
-          Add Exact Amount of Nutrition
-        </AwesomeButton>
+        <View style={styles.containerTop}>
+          <Text style={styles.pageHeader}>{currentDate}</Text>
+        </View>
+        <View style={styles.containerBottom}>{renderNutritionInfo()}</View>
       </View>
       <FooterNav navigation={navigation} />
     </View>
@@ -42,15 +69,28 @@ const styles = StyleSheet.create({
   container: container,
   pageHeader: {
     color: "white",
-    fontSize: 36,
+    fontSize: 28,
     textAlign: "center",
   },
-  pageBody: {
+  containerTop: {
+    height: "15%",
+  },
+  containerBottom: {
+    height: "75%",
+  },
+  nutritionText: {
     color: "white",
-    fontSize: 24,
-    textAlign: "center",
+    fontSize: 36,
   },
   contentContainer: {
     height: "90%",
+  },
+  nutritionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: "25%",
+    paddingRight: 30,
+    paddingLeft: 30,
+    marginTop: 30,
   },
 });

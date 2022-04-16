@@ -13,6 +13,7 @@ const FooterNav = ({ navigation }): ReactElement => {
         borderRadius={0}
         style={styles.navButton}
         onPress={() => navigation.navigate("Home")}
+        raiseLevel={0}
       >
         Home
       </AwesomeButton>
@@ -23,6 +24,7 @@ const FooterNav = ({ navigation }): ReactElement => {
         borderRadius={0}
         style={styles.navButton}
         onPress={() => navigation.navigate("Meals")}
+        raiseLevel={0}
       >
         Meals
       </AwesomeButton>
@@ -33,6 +35,7 @@ const FooterNav = ({ navigation }): ReactElement => {
         borderRadius={0}
         style={styles.navButton}
         onPress={() => navigation.navigate("History")}
+        raiseLevel={0}
       >
         History
       </AwesomeButton>
@@ -43,6 +46,7 @@ const FooterNav = ({ navigation }): ReactElement => {
         borderRadius={0}
         style={styles.navButton}
         onPress={() => navigation.navigate("Profile")}
+        raiseLevel={0}
       >
         Profile
       </AwesomeButton>

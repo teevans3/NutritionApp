@@ -36,9 +36,7 @@ const Create = ({ navigation }): ReactElement => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Text style={styles.pageHeader}>Create Page</Text>
-      </View>
+      <View style={styles.contentContainer}></View>
       <TextInput
         style={styles.textInput}
         placeholder="Name"

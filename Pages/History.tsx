@@ -6,9 +6,7 @@ import { container } from "../styles/general";
 const History = ({ navigation }): ReactElement => {
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <Text style={styles.pageHeader}>History Page</Text>
-      </View>
+      <View style={styles.contentContainer}></View>
       <FooterNav navigation={navigation} />
     </View>
   );

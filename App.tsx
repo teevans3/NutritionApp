@@ -8,7 +8,7 @@ import Meals from "./Pages/Meals";
 import Home from "./Pages/Home";
 import History from "./Pages/History";
 import Profile from "./Pages/Profile";
-import ExactAmount from "./Pages/ExactAmount";
+import Edit from "./Pages/Edit";
 import Create from "./Pages/Create";
 
 const Stack = createNativeStackNavigator();
@@ -47,8 +47,8 @@ export default function App(): ReactElement {
             options={stackStyleOptions}
           />
           <Stack.Screen
-            name="ExactAmount"
-            component={ExactAmount}
+            name="Edit"
+            component={Edit}
             options={stackStyleOptions}
           />
           <Stack.Screen

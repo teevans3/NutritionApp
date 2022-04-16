@@ -16,8 +16,6 @@ const Meals = ({ navigation }): ReactElement => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.pageHeader}>Meals</Text>
-        <View style={styles.divider}></View>
         <AwesomeButton
           style={styles.mealItemsList}
           stretch
