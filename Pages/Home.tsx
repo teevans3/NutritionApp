@@ -10,6 +10,8 @@ import { StyleSheet, Text, View } from "react-native";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
 import { container } from "../styles/general";
+import { selectMode } from "../profileSlice";
+import { nutritionModes } from "../enums/profileEnums";
 
 type HomePropsType = {
   navigation: any;
@@ -22,6 +24,8 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
   const totalProtein = useSelector(selectTotalProtein);
   const totalNetCarbs = useSelector(selectTotalNetCarbs);
 
+  const mode = useSelector(selectMode);
+
   const nutritionList = [
     { title: "Calories", total: totalCalories },
     { title: "Protein", total: totalProtein },
@@ -29,27 +33,40 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
   ];
 
   const renderNutritionInfo = () =>
-    nutritionList.map(({ title, total }) => (
-      <View style={styles.nutritionContainer} key={title}>
-        <Text style={styles.nutritionText}>
-          {title}: {total}
-          {title === "Calories" ? null : "g"}
-        </Text>
-        <AwesomeButton
-          width={60}
-          height={50}
-          raiseLevel={0}
-          borderRadius={10}
-          onPress={() =>
-            navigation.navigate("Edit", {
-              nutritionType: title,
-            })
-          }
-        >
-          Edit
-        </AwesomeButton>
-      </View>
-    ));
+    nutritionList.map(({ title, total }) => {
+      // if in Bulking mode, only care about calories and protein
+      if (mode === nutritionModes.bulking && title === "Net Carbs") {
+        return null;
+      }
+
+      // if in Cutting mode, only care about net carbs and protein
+      if (mode === nutritionModes.cutting && title === "Calories") {
+        return null;
+      }
+
+      return (
+        <View style={styles.bodySection} key={title}>
+          <Text style={styles.bodyTitle}>
+            {title}: {total}
+            {title === "Calories" ? null : "g"}
+          </Text>
+          <AwesomeButton
+            width={60}
+            height={50}
+            raiseLevel={0}
+            borderRadius={10}
+            onPress={() =>
+              navigation.navigate("Edit", {
+                nutritionType: title,
+              })
+            }
+          >
+            Edit
+          </AwesomeButton>
+          <Text style={styles.bodyText}>Goal Met? y/n</Text>
+        </View>
+      );
+    });
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
@@ -78,14 +95,17 @@ const styles = StyleSheet.create({
   containerBottom: {
     height: "75%",
   },
-  nutritionText: {
+  bodyTitle: {
     color: "white",
     fontSize: 36,
+  },
+  bodyText: {
+    color: "white",
   },
   contentContainer: {
     height: "90%",
   },
-  nutritionContainer: {
+  bodySection: {
     flexDirection: "row",
     justifyContent: "space-between",
     height: "25%",

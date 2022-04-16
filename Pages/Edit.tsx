@@ -16,11 +16,10 @@ const Edit = ({ navigation, route }): ReactElement => {
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.containerTop}>
-          <Text style={styles.exactNutritionText}>
+          <Text style={styles.pageTitle}>
             Edit {nutritionType}
             {nutritionType === "Calories" ? "" : " (g)"}
           </Text>
-          <Text style={styles.exactNutritionText}></Text>
         </View>
         <View style={styles.containerMiddle}>
           <TextInput
@@ -39,12 +38,11 @@ const Edit = ({ navigation, route }): ReactElement => {
             raiseLevel={0}
             borderRadius={50}
             onPress={() => {
-              console.log(typeof amount);
-              dispatch(addByAmount({ amount, nutritionType }));
+              dispatch(removeByAmount({ amount, nutritionType }));
               navigation.navigate("Home");
             }}
           >
-            Add
+            Remove
           </AwesomeButton>
           <AwesomeButton
             width={90}
@@ -52,11 +50,12 @@ const Edit = ({ navigation, route }): ReactElement => {
             raiseLevel={0}
             borderRadius={50}
             onPress={() => {
-              dispatch(removeByAmount({ amount, nutritionType }));
+              console.log(typeof amount);
+              dispatch(addByAmount({ amount, nutritionType }));
               navigation.navigate("Home");
             }}
           >
-            Remove
+            Add
           </AwesomeButton>
         </View>
       </View>
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 102,
     color: "white",
   },
-  exactNutritionText: {
+  pageTitle: {
     textAlign: "center",
     color: "white",
     fontSize: 36,
