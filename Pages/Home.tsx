@@ -10,7 +10,7 @@ import { StyleSheet, Text, View } from "react-native";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
 import { container } from "../styles/general";
-import { selectMode } from "../profileSlice";
+import { selectMode, selectDailyGoals } from "../profileSlice";
 import { nutritionModes } from "../enums/profileEnums";
 
 type HomePropsType = {
@@ -26,14 +26,20 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
 
   const mode = useSelector(selectMode);
 
+  const dailyGoals = useSelector(selectDailyGoals);
+
   const nutritionList = [
-    { title: "Calories", total: totalCalories },
-    { title: "Protein", total: totalProtein },
-    { title: "Net Carbs", total: totalNetCarbs },
+    { title: "Calories", type: "calories", total: totalCalories },
+    { title: "Protein", type: "protein", total: totalProtein },
+    { title: "Net Carbs", type: "netCarbs", total: totalNetCarbs },
   ];
 
+  const renderDailyNutritionGoal = (nutritionType: string): number => {
+    return dailyGoals[nutritionType];
+  };
+
   const renderNutritionInfo = () =>
-    nutritionList.map(({ title, total }) => {
+    nutritionList.map(({ title, total, type }) => {
       // if in Bulking mode, only care about calories and protein
       if (mode === nutritionModes.bulking && title === "Net Carbs") {
         return null;
@@ -46,24 +52,31 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
 
       return (
         <View style={styles.bodySection} key={title}>
-          <Text style={styles.bodyTitle}>
-            {title}: {total}
-            {title === "Calories" ? null : "g"}
-          </Text>
-          <AwesomeButton
-            width={60}
-            height={50}
-            raiseLevel={0}
-            borderRadius={10}
-            onPress={() =>
-              navigation.navigate("Edit", {
-                nutritionType: title,
-              })
-            }
-          >
-            Edit
-          </AwesomeButton>
-          <Text style={styles.bodyText}>Goal Met? y/n</Text>
+          <View style={styles.sectionTitle}>
+            <Text style={styles.bodyTitle}>{title}</Text>
+            <AwesomeButton
+              width={60}
+              height={30}
+              raiseLevel={0}
+              borderRadius={10}
+              onPress={() =>
+                navigation.navigate("Edit", {
+                  nutritionType: title,
+                })
+              }
+            >
+              Edit
+            </AwesomeButton>
+          </View>
+          <View style={styles.divider}></View>
+          <View style={styles.sectionInfo}>
+            <Text style={styles.bodyText}>
+              {total}
+              {title === "Calories" ? null : "g"} /{" "}
+              {renderDailyNutritionGoal(type)}
+              {title === "Calories" ? null : "g"}
+            </Text>
+          </View>
         </View>
       );
     });
@@ -84,11 +97,22 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: container,
+  divider: {
+    backgroundColor: "white",
+    height: 1,
+  },
   pageHeader: {
     color: "white",
     fontSize: 28,
     textAlign: "center",
   },
+  sectionTitle: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  sectionInfo: {},
   containerTop: {
     height: "15%",
   },
@@ -97,20 +121,23 @@ const styles = StyleSheet.create({
   },
   bodyTitle: {
     color: "white",
-    fontSize: 36,
+    fontSize: 28,
   },
   bodyText: {
+    textAlign: "center",
     color: "white",
+    fontSize: 36,
+    fontWeight: "bold",
   },
   contentContainer: {
     height: "90%",
   },
   bodySection: {
-    flexDirection: "row",
+    // flexDirection: "row",
     justifyContent: "space-between",
-    height: "25%",
-    paddingRight: 30,
-    paddingLeft: 30,
-    marginTop: 30,
+    // height: "25%",
+    // paddingRight: 30,
+    // paddingLeft: 30,
+    marginTop: 40,
   },
 });

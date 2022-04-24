@@ -23,10 +23,23 @@ const Profile = ({ navigation }): ReactElement => {
     nutritionModes.both,
   ];
 
+  // TODO - find a better way to do this. store the title
+  const getNutritionTitle = (nutritionType: string): string => {
+    switch (nutritionType) {
+      case "calories":
+        return "Calories";
+      case "protein":
+        return "Protein (g)";
+      default:
+        return "Net Carbs (g)";
+    }
+  };
+
   const renderNutritionModes = () =>
     modes.map((nutritionMode) => (
-      <View>
+      <View style={styles.mode}>
         <Text style={styles.modeLabel}>{nutritionMode}</Text>
+        {/* TODO - change these to buttons for better styling? */}
         <RadioButton
           value={nutritionMode}
           status={mode === nutritionMode ? "checked" : "unchecked"}
@@ -43,13 +56,11 @@ const Profile = ({ navigation }): ReactElement => {
 
   const renderDailyGoals = () =>
     Object.keys(dailyGoals).map((nutritionType) => (
-      <>
-        <Text style={styles.bodyText}>{nutritionType}</Text>
+      <View style={styles.dailyGoalTitle}>
+        <Text style={styles.bodyText}>{getNutritionTitle(nutritionType)}</Text>
         <TextInput
           style={styles.textInput}
-          placeholder={`${dailyGoals[nutritionType]} ${
-            nutritionType === "calories" ? "" : "g"
-          }`}
+          placeholder={dailyGoals[nutritionType].toString()}
           placeholderTextColor="white"
           keyboardType="numeric"
           onChangeText={(num) =>
@@ -62,27 +73,26 @@ const Profile = ({ navigation }): ReactElement => {
           }
           maxLength={4}
         />
-      </>
+      </View>
     ));
 
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.containerTop}>
-          <Text style={styles.pageTitle}>Profile: User</Text>
+          <Text style={styles.pageTitle}>Profile</Text>
         </View>
         <View style={styles.containerMiddle}>
           <View style={styles.bodySection}>
             <Text style={styles.sectionTitle}>Current Mode: {mode}</Text>
-            {renderNutritionModes()}
+            <View style={styles.divider}></View>
+            <View style={styles.modesContainer}>{renderNutritionModes()}</View>
           </View>
           <View style={styles.bodySection}>
-            <Text style={styles.sectionTitle}>Current Daily Goals</Text>
+            <Text style={styles.sectionTitle}>Daily Goals</Text>
+            <View style={styles.divider}></View>
             {renderDailyGoals()}
           </View>
-        </View>
-        <View style={styles.containerBottom}>
-          <Text>Save?</Text>
         </View>
       </View>
       <FooterNav navigation={navigation} />
@@ -94,6 +104,22 @@ export default Profile;
 
 const styles = StyleSheet.create({
   container: container,
+  divider: {
+    backgroundColor: "white",
+    height: 1,
+  },
+  dailyGoalTitle: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  modesContainer: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  mode: {
+    width: "33%",
+  },
   pageHeader: {
     color: "white",
     fontSize: 36,
@@ -118,8 +144,9 @@ const styles = StyleSheet.create({
   },
   bodyText: {
     color: "white",
+    fontSize: 32,
   },
-  bodySection: {},
+  bodySection: { height: "50%" },
   sectionTitle: {
     color: "white",
     fontWeight: "bold",
@@ -127,8 +154,11 @@ const styles = StyleSheet.create({
   },
   modeLabel: {
     color: "white",
+    textAlign: "center",
   },
   textInput: {
     color: "white",
+    fontSize: 32,
+    fontWeight: "bold",
   },
 });
