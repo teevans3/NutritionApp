@@ -51,11 +51,21 @@ export const nutritionSlice = createSlice({
         state.totalNetCarbs -= action.payload.amount;
       }
     },
+    resetNutritionInfo: (state) => {
+      state.totalCalories = 0;
+      state.totalProtein = 0;
+      state.totalNetCarbs = 0;
+    },
   },
 });
 
-export const { addMeal, removeMeal, addByAmount, removeByAmount } =
-  nutritionSlice.actions;
+export const {
+  addMeal,
+  removeMeal,
+  addByAmount,
+  removeByAmount,
+  resetNutritionInfo,
+} = nutritionSlice.actions;
 
 // TODO - do we need this thunk?
 export const incrementAsync = (amount) => (dispatch) => {

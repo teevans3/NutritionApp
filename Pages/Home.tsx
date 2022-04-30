@@ -1,9 +1,10 @@
-import React, { ReactElement } from "react";
-import { useSelector } from "react-redux";
+import React, { ReactElement, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   selectTotalCalories,
   selectTotalProtein,
   selectTotalNetCarbs,
+  resetNutritionInfo,
 } from "../nutritionSlice";
 import moment from "moment";
 import { StyleSheet, Text, View } from "react-native";
@@ -18,7 +19,7 @@ type HomePropsType = {
 };
 
 const Home = ({ navigation }: HomePropsType): ReactElement => {
-  const currentDate = moment(new Date()).format("dddd MMMM D Y");
+  const [date, setDate] = useState<Date>(new Date());
 
   const totalCalories = useSelector(selectTotalCalories);
   const totalProtein = useSelector(selectTotalProtein);
@@ -28,11 +29,25 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
 
   const dailyGoals = useSelector(selectDailyGoals);
 
+  const dispatch = useDispatch();
+
   const nutritionList = [
     { title: "Calories", type: "calories", total: totalCalories },
     { title: "Protein", type: "protein", total: totalProtein },
     { title: "Net Carbs", type: "netCarbs", total: totalNetCarbs },
   ];
+
+  // reset nutrition info each day
+  // TODO - find a better way to do this?
+  useEffect(() => {
+    const storedDate = moment(date).startOf("day");
+    const currentDate = moment().startOf("day");
+    if (currentDate > storedDate) {
+      setDate(currentDate);
+      dispatch(resetNutritionInfo());
+      // TODO - save total nutrition info for the day??
+    }
+  }, []);
 
   const renderDailyNutritionGoal = (nutritionType: string): number => {
     return dailyGoals[nutritionType];
@@ -84,7 +99,9 @@ const Home = ({ navigation }: HomePropsType): ReactElement => {
     <View style={styles.container}>
       <View style={styles.contentContainer}>
         <View style={styles.containerTop}>
-          <Text style={styles.pageHeader}>{currentDate}</Text>
+          <Text style={styles.pageHeader}>
+            {moment(date).format("dddd MMMM D Y")}
+          </Text>
         </View>
         <View style={styles.containerBottom}>{renderNutritionInfo()}</View>
       </View>
@@ -133,11 +150,7 @@ const styles = StyleSheet.create({
     height: "90%",
   },
   bodySection: {
-    // flexDirection: "row",
     justifyContent: "space-between",
-    // height: "25%",
-    // paddingRight: 30,
-    // paddingLeft: 30,
     marginTop: 40,
   },
 });
