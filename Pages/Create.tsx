@@ -1,10 +1,12 @@
 import React, { ReactElement, useState } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { StyleSheet, View, TextInput } from "react-native";
+import { useDispatch } from "react-redux";
 import FooterNav from "../components/FooterNav";
 import AwesomeButton from "react-native-really-awesome-button";
-import { createMeal, selectMealItems } from "../mealsSlice";
+import { createMeal } from "../mealsSlice";
 import { container } from "../styles/general";
+import { themePalette } from "../styles/general";
+import uuid from "react-native-uuid";
 
 const Create = ({ navigation }): ReactElement => {
   const [name, setName] = useState<string>("");
@@ -15,15 +17,12 @@ const Create = ({ navigation }): ReactElement => {
   const [netCarbs, setNetCarbs] = useState<number>(0);
 
   const dispatch = useDispatch();
-  const mealItems = useSelector(selectMealItems);
 
   // TODO - save this to actual database
   const createNewMeal = () => {
-    // TODO - generate a random id
-    const lastMealItem = mealItems[mealItems.length - 1];
-
+    console.log(uuid.v4());
     const newMealItem = {
-      id: lastMealItem.id + 1,
+      id: uuid.v4(),
       name: name,
       description: description,
       calories: calories,
@@ -32,54 +31,61 @@ const Create = ({ navigation }): ReactElement => {
     };
 
     dispatch(createMeal({ newMealItem: newMealItem }));
+    navigation.navigate("Meals");
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}></View>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Name"
-        placeholderTextColor="white"
-        onChangeText={setName}
-      />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Description"
-        placeholderTextColor="white"
-        onChangeText={setDescription}
-      />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Calories"
-        placeholderTextColor="white"
-        keyboardType="numeric"
-        onChangeText={setCalories}
-      />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Protein (g)"
-        placeholderTextColor="white"
-        keyboardType="numeric"
-        onChangeText={setProtein}
-      />
-      <TextInput
-        style={styles.textInput}
-        placeholder="Net Carbs (g)"
-        placeholderTextColor="white"
-        keyboardType="numeric"
-        onChangeText={setNetCarbs}
-      />
-      <AwesomeButton
-        stretch
-        backgroundColor="#3d3d3d"
-        borderColor="#fff"
-        borderWidth={1}
-        raiseLevel={0}
-        onPress={createNewMeal}
-      >
-        Create
-      </AwesomeButton>
+      <View style={styles.contentContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Name"
+          placeholderTextColor="gray"
+          onChangeText={setName}
+        />
+        <TextInput
+          style={styles.textInputDescription}
+          numberOfLines={6}
+          multiline={true}
+          placeholder="Description"
+          placeholderTextColor="gray"
+          onChangeText={setDescription}
+        />
+        <View style={styles.nutritionInputContainer}>
+          <TextInput
+            style={styles.nutritionInput}
+            placeholder="Calories"
+            placeholderTextColor="gray"
+            keyboardType="numeric"
+            onChangeText={(newVal: string) => setCalories(parseInt(newVal, 10))}
+          />
+          <TextInput
+            style={styles.nutritionInput}
+            placeholder="Protein (g)"
+            placeholderTextColor="gray"
+            keyboardType="numeric"
+            onChangeText={(newVal: string) => setProtein(parseInt(newVal, 10))}
+          />
+          <TextInput
+            style={styles.nutritionInput}
+            placeholder="Net Carbs (g)"
+            placeholderTextColor="gray"
+            keyboardType="numeric"
+            onChangeText={(newVal: string) => setNetCarbs(parseInt(newVal, 10))}
+          />
+        </View>
+
+        <AwesomeButton
+          stretch
+          backgroundColor={themePalette.dark}
+          borderColor={themePalette.bright}
+          borderWidth={1}
+          raiseLevel={0}
+          onPress={createNewMeal}
+        >
+          Create
+        </AwesomeButton>
+      </View>
       <FooterNav navigation={navigation} />
     </View>
   );
@@ -95,13 +101,37 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   contentContainer: {
+    justifyContent: "center",
     height: "90%",
   },
   textInput: {
     color: "white",
     height: 40,
-    borderColor: "white",
+    borderColor: themePalette.bright,
     borderWidth: 1,
+    marginBottom: 6,
+    padding: 10,
+  },
+  nutritionInputContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  nutritionInput: {
+    width: "32%",
+    color: "white",
+    height: 40,
+    borderColor: themePalette.bright,
+    borderWidth: 1,
+    marginBottom: 4,
+    padding: 10,
+  },
+  textInputDescription: {
+    color: "white",
+    height: 80,
+    borderColor: themePalette.bright,
+    borderWidth: 1,
+    marginBottom: 6,
     padding: 10,
   },
 });
