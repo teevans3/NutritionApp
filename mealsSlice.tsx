@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { mealItems } from "./sampleData";
 
 export const mealsSlice = createSlice({
   name: "meals",
   initialState: {
-    mealItems: mealItems,
+    mealItems: [],
   },
   reducers: {
     createMeal: (state, action) => {
