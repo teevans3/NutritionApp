@@ -1,8 +1,9 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AwesomeButton from "react-native-really-awesome-button";
 import { addMeal, removeMeal, selectMealIds } from "../nutritionSlice";
+import { themePalette } from "../styles/general";
 
 const MealItem = ({
   item,
@@ -38,10 +39,32 @@ const MealItem = ({
   };
 
   // only render Untrack Meal btn if meal was added to store
-  const renderUntrackMealBtn = () =>
-    mealIds.includes(item.id) ? (
-      <AwesomeButton onPress={untrackMeal}>Untrack Meal</AwesomeButton>
-    ) : null;
+  const renderTrackMealContainer = () => (
+    <View style={styles.trackMealButtonsContainer}>
+      <AwesomeButton
+        onPress={trackMeal}
+        style={styles.trackMealButton}
+        backgroundColor={themePalette.bright}
+        raiseLevel={0}
+        stretch
+        height={40}
+      >
+        Track Meal
+      </AwesomeButton>
+      {mealIds.includes(item.id) && (
+        <AwesomeButton
+          onPress={untrackMeal}
+          backgroundColor={themePalette.bright}
+          style={styles.trackMealButton}
+          raiseLevel={0}
+          height={40}
+          stretch
+        >
+          Untrack Meal
+        </AwesomeButton>
+      )}
+    </View>
+  );
 
   const displayMealInfo = () => {
     if (item.id === displayedMealId) {
@@ -50,22 +73,25 @@ const MealItem = ({
     return setDisplayedMealId(item.id);
   };
   return (
+    // TODO - why is this generating same key names ???
     <View style={styles.mealItemContainer}>
       <AwesomeButton
+        style={styles.mealButton}
         stretch
-        backgroundColor="#3d3d3d"
-        borderColor="#fff"
+        backgroundColor={
+          displayedMealId === item.id ? themePalette.bright : themePalette.dark
+        }
+        borderColor={themePalette.bright}
         borderWidth={1}
+        borderRadius={displayedMealId === item.id ? 4 : 0}
         raiseLevel={0}
-        key={item.id}
         onPress={displayMealInfo}
       >
         {item.name}
       </AwesomeButton>
       {displayedMealId === item.id && (
         <>
-          <AwesomeButton onPress={trackMeal}>Track Meal</AwesomeButton>
-          {renderUntrackMealBtn()}
+          {renderTrackMealContainer()}
           <View style={styles.nutritionContainer}>
             <Text style={[styles.mealDataText, styles.nutritionText]}>
               Protein: {item.protein}g
@@ -77,7 +103,7 @@ const MealItem = ({
               Calories: {item.calories}
             </Text>
           </View>
-          <Text style={styles.mealDataText}>{item.description}</Text>
+          <Text style={styles.mealDataTextDescription}>{item.description}</Text>
         </>
       )}
     </View>
@@ -87,12 +113,23 @@ const MealItem = ({
 export default MealItem;
 
 const styles = StyleSheet.create({
-  mealItemBtn: {
-    alignSelf: "flex-start",
+  mealItemContainer: {
+    borderColor: themePalette.bright,
+    borderStyle: "solid",
+    width: "100%",
+  },
+  mealButton: {
+    marginBottom: 4,
+    width: "100%",
   },
   mealDataText: {
     color: "white",
     fontSize: 12,
+  },
+  mealDataTextDescription: {
+    color: "white",
+    fontSize: 12,
+    marginBottom: 12,
   },
   nutritionContainer: {
     display: "flex",
@@ -103,5 +140,14 @@ const styles = StyleSheet.create({
   },
   nutritionText: {
     fontSize: 16,
+  },
+  trackMealButtonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "flex-start",
+  },
+  trackMealButton: {
+    width: "50%",
+    padding: 2,
   },
 });
