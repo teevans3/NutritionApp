@@ -37,7 +37,7 @@ const Profile = ({ navigation }): ReactElement => {
 
   const renderNutritionModes = () =>
     modes.map((nutritionMode) => (
-      <View style={styles.mode}>
+      <View style={styles.mode} key={nutritionMode}>
         <Text style={styles.modeLabel}>{nutritionMode}</Text>
         {/* TODO - change these to buttons for better styling? */}
         <RadioButton
@@ -56,7 +56,7 @@ const Profile = ({ navigation }): ReactElement => {
 
   const renderDailyGoals = () =>
     Object.keys(dailyGoals).map((nutritionType) => (
-      <View style={styles.dailyGoalTitle}>
+      <View style={styles.dailyGoalTitle} key={nutritionType}>
         <Text style={styles.bodyText}>{getNutritionTitle(nutritionType)}</Text>
         <TextInput
           style={styles.textInput}

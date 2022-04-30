@@ -5,6 +5,7 @@ import AwesomeButton from "react-native-really-awesome-button";
 import FooterNav from "../components/FooterNav";
 import { addByAmount, removeByAmount } from "../nutritionSlice";
 import { container } from "../styles/general";
+import { themePalette } from "../styles/general";
 
 const Edit = ({ navigation, route }): ReactElement => {
   const [amount, setAmount] = useState<number>(0);
@@ -33,8 +34,11 @@ const Edit = ({ navigation, route }): ReactElement => {
         </View>
         <View style={styles.containerBottom}>
           <AwesomeButton
+            backgroundColor={themePalette.dark}
+            borderColor={themePalette.light}
             width={90}
             height={90}
+            borderWidth={1}
             raiseLevel={0}
             borderRadius={50}
             onPress={() => {
@@ -45,12 +49,14 @@ const Edit = ({ navigation, route }): ReactElement => {
             Remove
           </AwesomeButton>
           <AwesomeButton
+            backgroundColor={themePalette.bright}
+            borderColor={themePalette.light}
             width={90}
             height={90}
+            borderWidth={1}
             raiseLevel={0}
             borderRadius={50}
             onPress={() => {
-              console.log(typeof amount);
               dispatch(addByAmount({ amount, nutritionType }));
               navigation.navigate("Home");
             }}

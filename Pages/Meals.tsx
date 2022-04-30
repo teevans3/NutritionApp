@@ -1,11 +1,11 @@
 import React, { ReactElement, useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import AwesomeButton from "react-native-really-awesome-button";
+import { StyleSheet, View, FlatList } from "react-native";
 import MealItem from "../components/MealItem";
 import FooterNav from "../components/FooterNav";
 import { useSelector } from "react-redux";
 import { selectMealItems } from "../mealsSlice";
 import { container } from "../styles/general";
+import MealOptions from "../components/MealOptions";
 
 const Meals = ({ navigation }): ReactElement => {
   // TODO - find a better way to do this
@@ -16,41 +16,24 @@ const Meals = ({ navigation }): ReactElement => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <AwesomeButton
-          style={styles.mealItemsList}
-          stretch
-          backgroundColor="#2c824a"
-          backgroundDarker="#1c5430"
-          borderRadius={116}
-          raiseLevel={6}
-          textSize={20}
-          onPress={() => {
-            navigation.navigate("Create");
-          }}
-        >
-          Add New Meal
-        </AwesomeButton>
-        <AwesomeButton
-          style={styles.mealItemsList}
-          stretch
-          backgroundColor="#2c824a"
-          backgroundDarker="#1c5430"
-          borderRadius={116}
-          raiseLevel={6}
-          textSize={20}
-        >
-          Search
-        </AwesomeButton>
         <FlatList
-          data={mealItems}
-          renderItem={({ item }) => (
-            <MealItem
-              item={item}
-              navigation={navigation}
-              displayedMealId={displayedMealId}
-              setDisplayedMealId={setDisplayedMealId}
-            />
-          )}
+          // TODO - find a better way to render the options at end of list?
+          data={[...mealItems, { options: true }]}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => {
+            if (item.options) {
+              return <MealOptions navigation={navigation} key="meal-options" />;
+            }
+            return (
+              <MealItem
+                key={item.key}
+                item={item}
+                navigation={navigation}
+                displayedMealId={displayedMealId}
+                setDisplayedMealId={setDisplayedMealId}
+              />
+            );
+          }}
         />
       </View>
       <FooterNav navigation={navigation} />
